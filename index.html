@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <meta charset="utf-8">
+  <title>Music History Exercise</title>
+</head>
+<body>
+<div class="container-fluid">
+<div class="big_wrapper">
+  <nav>
+    <ul>
+      <a href="#" id="view_music"><li>View Music  </li></a><span>|</span>
+      <a href="#" id="add_button"><li>Add Music  </li></a><span>|</span>
+      <a href="#" id="music_profile"><li>Profile</li></a><span></span>
+    </ul>
+  </nav>
+    <div class="music" id="music">
+      <section class="sidebar"><br>
+
+        <label for="length">Song length:</label><span id="length_val" class="length_val">5:00</span><br>
+
+        <input type="range" min="0" max="599" class="length" id="length"><br>
+
+        <label for="artist">Artist:</label><br>
+        <select id="artist"><option id="artist_all" class="all" value="all">Show All</option></select><br>
+
+        <label for="album">Album:</label><br>
+        <select id="album"><option id="album_all" class="all" value="all">Show All</option></select>
+
+        <p>Genre:</p>
+        <select id="genre">
+          <option class="genre_all" id="genre_all" value="all">Show All</option>
+          <option class="rock" id="rock" value="Rock">Rock</option>
+          <option class="pop" id="pop" value="Pop">Pop</option>
+          <option class="blues" id="blues" value="Blues">Blues</option>
+          <option class="classical" id="classical" value="Classical">Classical</option>
+          <option class="jazz" id="jazz" value="Jazz">Jazz</option>
+          <option class="hiphop" id="hiphop" value="Hiphop">Hiphop</option>
+        </select>
+
+        <input type="button" name="filter" id="filter" value="Filter">
+      </section>
+
+    <main>
+      <section class="main_title">
+        <h2>Music History Application</h2>
+      </section>
+      <section class="songlist" id="songlist">
+      </section>
+      <section class="add_more" id='add_more'>
+        <p class="glyphicon glyphicon-menu-down drop_down more"></p>
+      </section>
+    </main>
+  </div>
+</div>
+
+  <div id="add_music" class="hidden">
+    <section class="add_music">
+      <fieldset class="new_song_form">
+        <legend class="add_music_legend">Add Music</legend>
+          <label for="add_song">Song Name: </label>
+          <span><input type="text" id="add_song" name="add_song"></span><br><br>
+
+          <label for="add_artist">Artist: </label>
+          <span><input type="text" id="add_artist" name="add_artist"></span><br><br>
+
+          <label for="add_album">Album: </label>
+          <span><input type="text" id="add_album" name="add_album"></span><br><br>
+
+          <label for="add_genre">Genre: </label>
+          <span><input type="text" name="add_genre" id="add_genre"></span><br><br>
+
+          <label for="add_length">Length: </label>
+          <span><input type="text" name="add_length" id="add_length" placeholder="Ex: 3:45"></span><br><br>
+
+          <input type="button" class="add" id="add" name="add" value="Add Song">
+          <input type="button" class="clear" name="clear" id="clear" value="Clear"><br><br>
+      </fieldset><br>
+
+        <div class="success_banner hidden" id="success_banner">Your song was successfully added!</div>
+
+    </section>
+  </div>
+</div>
+</div>
+<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="/bower_components/bootstrap/js/tooltip.js"></script>
+<script src="js/addSongs.js"></script>
+<script src="js/songs.js"></script>
+</body>
+</html>

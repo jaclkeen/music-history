@@ -1,0 +1,21 @@
+{
+  "name": "music-history",
+  "homepage": "https://github.com/jaclkeen/music-history",
+  "authors": [
+    "Jacob Keen <jaclkeen@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.0"
+  }
+}
