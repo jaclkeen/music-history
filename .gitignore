@@ -1,5 +1,5 @@
 /bower_components
-/css
+/css/main.css.map
 /dist
 lib/.sass-cache
 lib/node_modules
