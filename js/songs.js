@@ -5,7 +5,7 @@ var Songs = (function(){
     _songs[_songs.length] = item;
   }
 
-  function showJSON(){
+  function showSongs(){
     return new Promise(function(resovle, reject){
       $.ajax({
         url: 'https://music-history-7288d.firebaseio.com/songs.json'
@@ -16,10 +16,24 @@ var Songs = (function(){
     })
   }
 
+  function addSong(song){
+    return new Promise(function(resolve, reject){
+      $.ajax({
+        url: 'https://music-history-7288d.firebaseio.com/songs.json',
+        type: 'POST',
+        data: JSON.stringify(song),
+        dataType: 'json'
+      }).done(function(data){
+        resolve(data)
+      })
+    })
+  }
+
   return {
     addToSongsArray: addToSongsArray,
+    addSong: addSong,
     getSongs: _songs,
-    loadFiles: showJSON
+    loadFiles: showSongs
   }
 })()
 

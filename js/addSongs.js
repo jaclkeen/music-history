@@ -31,11 +31,14 @@ function addUserInputSong(){
       genre: $add_genre,
       length: $add_length
     }]
-    clearPage();
+    Songs.addSong(userSong[0])
+      .then(function(){
+        clearPage();
+        s_banner.fadeIn(500).removeClass('hidden').fadeOut(3000)
+        addToDom(userSong)
+      })
     // SHOWS WINNING BANNER
-    s_banner.fadeIn(500).removeClass('hidden').fadeOut(3000)
   }
-    addToDom(userSong)
 }
 
 function eventListeners(){
