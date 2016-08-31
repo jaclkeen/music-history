@@ -29,6 +29,17 @@ var Songs = (function(){
     })
   }
 
+  // function deleteSong(song, songTitle){
+  //   return new Promise(function(resolve, reject){
+  //     $.ajax({
+  //       url: `https://music-history-7288d.firebaseio.com/songs/${}.json`,
+  //       type: 'DELETE',
+  //     }).done(function(){
+  //       resolve(data)
+  //     })
+  //   })
+  // }
+
   return {
     addToSongsArray: addToSongsArray,
     addSong: addSong,
@@ -136,8 +147,5 @@ Songs.loadFiles()
   .then(
     function(){
       spa()
-    })
-  .then(
-    function(){
       eventListeners()
     })
