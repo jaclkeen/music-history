@@ -264,18 +264,12 @@ section{
       margin-left: 37%;
     }
   }
-
-  .success_banner{
-    border: 2px solid white;
-    background-color: $light-red;
-    font-size: 1.5em;
-    width: 80%;
-    margin: auto;
-    text-align: center;
+  .thumb{
+    display: none;
+  }
+  .t_style{
+    color: $light-red !important;
+    background: red !important;
+    border: 2px solid white !important;
   }
 }
-
-.hidden{
-  display: none;
-}
-

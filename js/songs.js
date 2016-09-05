@@ -1,71 +1,44 @@
-var Songs = (function(){
-  var _songs = [];
+"use strict";
 
-  function addToSongsArray(item){
-    _songs[_songs.length] = item;
-  }
+var dom = require('./domBuilder'),
+    db = require('./db-interactions'),
+    _songs = []
 
-  function showSongs(){
-    return new Promise(function(resovle, reject){
-      $.ajax({
-        url: 'https://music-history-7288d.firebaseio.com/songs.json'
-      }).done(function(content){
-        var data = content
-        resovle(data)
-      })
-    })
-  }
+// ON SUBMIT CLICK, CALLS ADD USER INPUT SONG FUNCTION
+$('#add').on("click", addUserInputSong)
 
-  function addSong(song){
-    return new Promise(function(resolve, reject){
-      $.ajax({
-        url: 'https://music-history-7288d.firebaseio.com/songs.json',
-        type: 'POST',
-        data: JSON.stringify(song),
-        dataType: 'json'
-      }).done(function(data){
-        resolve(data)
-      })
-    })
-  }
+//CLEAR INPUT FIELDS ON ADD MUSIC PAGE
+$('#clear').on("click", function(){
+  $("#add_song, #add_album, #add_artist, #add_genre, #add_length").val("");
+});
 
-  // function deleteSong(song, songTitle){
-  //   return new Promise(function(resolve, reject){
-  //     $.ajax({
-  //       url: `https://music-history-7288d.firebaseio.com/songs/${}.json`,
-  //       type: 'DELETE',
-  //     }).done(function(){
-  //       resolve(data)
-  //     })
-  //   })
-  // }
+// SHOWS TIME BASED ON RANGE INPUT
+$('#length').on('input', function(){
+  $('#length_val').html(dom.convertTime($('#length').val()))
+})
 
-  return {
-    addToSongsArray: addToSongsArray,
-    addSong: addSong,
-    getSongs: _songs,
-    loadFiles: showSongs
-  }
-})()
+//EXECUTES FILTER ON SONGS ARRAY WHEN FILTER BUTTON IS CLICKED
+$('#filter').on('click', function(){
+  timeFilter(_songs)
+  filterStuff(_songs)
+})
 
-function spa(){
-  $('#add_button').on("click", function(){
-    $("#add_music").removeClass('hidden');
-    $("#music").addClass("hidden");
-  })
-  $("#view_music").on("click", function(){
-    $("#music").removeClass('hidden');
-    $("#add_music").addClass('hidden');
-  })
-}
+  // REMOVES ELEMENT WHEN RED X IS CLICKED
+$(document).on('click', '.delete', function(){
+  $(this).closest('.element').remove()
+})
 
-function clearPage(){
-  $("#add_song").val("");
-  $("#add_album").val("");
-  $("#add_artist").val("");
-  $("#add_genre").val("");
-  $("#add_length").val("");
-}
+//////SPA EVENTS//////
+$('#add_button').on("click", function(){
+  $("#add_music").removeClass('hidden');
+  $("#music").addClass("hidden");
+})
+
+$("#view_music").on("click", function(){
+  $("#music").removeClass('hidden');
+  $("#add_music").addClass('hidden');
+})
+/////END SPA EVENTS/////
 
 function addArtistsIntoFilter(arr){
   var artists_select = document.getElementById('artist').childNodes
@@ -92,20 +65,6 @@ function addAlbumsIntoFilter(arr){
   }
 }
 
-function printStuff(thing){
-  var songlist = $('#songlist')
-  var song = $("<div></div>")
-  song.addClass('element')
-  song.html(`<h2 class='song_name'>${thing.title}
-    <button class='delete glyphicon glyphicon-remove'></button></h2>
-    <p class='artist'>${thing.artist}</p><span> &nbsp;|&nbsp;</span>
-    <p class='album'>${thing.album}</p><span> &nbsp;|&nbsp; </span>
-    <p class="genre">${thing.genre}</p><span> &nbsp;|&nbsp; </span>
-    <p class="length">${convertTime(thing.length)}</p>`)
-  songlist.append(song)
-  buttonListeners()
-}
-
 function filterStuff(obj){
   var artist = $('#artist').val()
   var album = $('#album').val()
@@ -115,16 +74,16 @@ function filterStuff(obj){
   for(var item in obj){
     console.log(obj[item])
     if(artist === obj[item].artist && artist !== 'all'){
-      printStuff(obj[item])
+      dom.printStuff(obj[item])
     }
     else if(album === obj[item].album && album !== 'all'){
-      printStuff(obj[item])
+      dom.printStuff(obj[item])
     }
     else if(genre === obj[item].genre && genre !== 'all'){
-      printStuff(obj[item])
+      dom.printStuff(obj[item])
     }
     else if(artist === 'all' && album === 'all' && genre === 'all'){
-      printStuff(obj[item])
+      dom.printStuff(obj[item])
     }
   }
 }
@@ -134,18 +93,51 @@ function timeFilter(arr){
   $('#songlist').html(" ")
   arr.forEach(function(item){
     if(length > item.length){
-      printStuff(item)
+      dom.printStuff(item)
     }
   })
 }
 
-Songs.loadFiles()
+function addUserInputSong(){
+  var $add_song = $("#add_song").val();
+  var $add_album = $("#add_album").val();
+  var $add_artist = $("#add_artist").val();
+  var $add_genre = $("#add_genre").val();
+  var $add_length = $("#add_length").val();
+
+  // VALIDATE SONG INPUT
+  if($add_song === "" || $add_album === "" || $add_artist === "" || $add_genre === "" || $add_length === ""){
+    return alert("All 5 field must have a value!");
+  }
+  else if(!$add_length.includes(':')){
+    $('#add_length').val("")
+    return alert("Song length must be in the correct format!");
+  }
+  else{
+    var userSong = [{
+      title: $add_song,
+      artist: $add_artist,
+      album: $add_album,
+      genre: $add_genre,
+      length: $add_length
+    }]
+      Materialize.toast(`You added ${$add_song}`, 40000, 't_style')
+      $('#add_length, #add_genre, #add_artist, #add_album, #add_song').html("")
+      addToDom(userSong)
+  }
+}
+
+function addToDom(song_info){
+  for(var key in song_info){
+    dom.printStuff(song_info[key])
+    _songs.push(song_info[key])
+    addArtistsIntoFilter(song_info[key])
+    addAlbumsIntoFilter(song_info[key])
+  }
+}
+
+db.getSongs()
   .then(
     function(songData){
       addToDom(songData)
-    })
-  .then(
-    function(){
-      spa()
-      eventListeners()
     })
